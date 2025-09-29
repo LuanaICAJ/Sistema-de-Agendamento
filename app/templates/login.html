@@ -2,62 +2,162 @@
 <html lang="pt-br">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-sacale=1.0">
-    <title>Login</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login - Agendamento</title>
     <link 
         href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" 
         rel="stylesheet"
     >
+    <style>
+        
+        html, body {
+            height: 100%;
+            margin: 0;
+            padding: 0;
+        }
+
+        .login-container {
+            height: 100vh; 
+            display: flex;
+            align-items: stretch; 
+            background-color: #f8f9fa; 
+        }
+
+        .form-side {
+            flex: 0 0 40%; 
+            background-color: white;
+            padding: 40px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center; 
+            align-items: center;
+        }
+
+        .image-side {
+            flex: 1; 
+            background-image: url('https://www.ifbaiano.edu.br/unidades/bonfim/files/2019/09/imagem-destacada-alunas.jpg'); 
+            background-size: cover;
+            background-position: center;
+            position: relative;
+        }
+        
+        .image-side::after {
+            content: "";
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0, 0, 0, 0.1); 
+        }
+
+        .logo-container {
+            margin-bottom: 30px;
+            align-items: center;
+        }
+
+        .login-title {
+            font-size: 2.5rem;
+            font-weight: bold;
+            margin-bottom: 20px;
+        }
+    
+        .btn-success {
+            --bs-btn-bg: #4CAF50; /* Verde escuro */
+            --bs-btn-border-color: #4CAF50;
+            --bs-btn-hover-bg: #45a049;
+            --bs-btn-hover-border-color: #45a049;
+        }
+
+        @media (max-width: 992px) {
+            .form-side {
+                flex: 1; 
+            }
+
+            .image-side {
+                display: none; 
+            }
+        }
+        
+        .form-control {
+            border-radius: 5px; 
+            padding: 10px;
+        }
+        
+        .form-check, .forgot-password {
+        }
+        
+        .form-login {
+            max-width: 350px; 
+            width: 100%;
+        }
+
+    </style>
 </head>
 
 <body>
 
-    <h1>Página de Login</h1>
-    <form>
-                <div class="mb-3">
-                    <label for="email" class="form-label">Email</label>
-                    <input 
-                        type="email" 
-                        class="form-control" 
-                        id="email" 
-                        placeholder="Digite seu email" 
-                        required
-                    >
+    <div class="login-container">
+        
+        <div class="form-side">
+            
+            <div class="form-login">
+                <div class="logo-container">
+                    <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/9/9c/Instituto_Federal_Baiano_-_Marca_Vertical_2015.svg/250px-Instituto_Federal_Baiano_-_Marca_Vertical_2015.svg.png" alt="Logo IF" style="max-width: 120px;">
                 </div>
-                <div class="mb-3">
-                    <label for="password" class="form-label">Senha</label>
-                    <input 
-                        type="password" 
-                        class="form-control" 
-                        id="password" 
-                        placeholder="Digite sua senha" 
-                        required
-                    >
-                </div>
-                <div class="mb-3 form-check">
-                    <input 
-                        type="checkbox" 
-                        class="form-check-input" 
-                        id="rememberMe"
-                    >
-                    <label class="form-check-label" for="rememberMe">Lembrar-me</label>
-                </div>
+                
+                <h2 class="login-title">Entrar</h2>
 
-              <!-- botão para entrar-->
-                    <a href="{% url 'index' %}" type="submit" class="btn btn-primary w-100">Entrar</a>
+                <form method="post">
+                    {% csrf_token %} 
+                    
+                    <div class="mb-3">
+                        <label for="id_email" class="form-label">Email:</label>
+                        <input 
+                            type="email" 
+                            class="form-control" 
+                            id="id_email" 
+                            name="email"
+                            placeholder="Seu email" 
+                            required
+                        >
+                    </div>
+                    
+                    <div class="mb-4">
+                        <label for="id_password" class="form-label">Senha:</label>
+                        <input 
+                            type="password" 
+                            class="form-control" 
+                            id="id_password"
+                            name="password"
+                            placeholder="Sua senha" 
+                            required
+                        >
+                    </div>
 
-            </form>
-            <p class="text-center mt-3">
-                <a href="#">Esqueceu sua senha?</a>
-            </p>
+                    <a href="{% url 'index' %}" class="btn btn-success w-100">Entrar</a>
+
+                    <div class="d-flex justify-content-between align-items-center mt-3 form-check">
+                        <input 
+                            type="checkbox" 
+                            class="form-check-input" 
+                            id="rememberMe"
+                        >
+                        <label class="form-check-label me-auto" for="rememberMe">Lembrar-me</label>
+                        <a href="#" class="forgot-password">Esqueceu sua senha?</a>
+                    </div>
+                </form>
+                
+            </div>
         </div>
+
+        <div class="image-side">
+            </div>
+
     </div>
 
-
-    <!-- Link para o Bootstrap JS -->
     <script 
         src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js">
     </script>
-
 </body>
 </html>

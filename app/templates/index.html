@@ -1,24 +1,105 @@
+{% load static %}
 <!DOCTYPE html>
 <html lang="pt-br">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Página Inicial</title>
-      <link 
+    <title>Dashboard - Agendamento</title>
+    <link 
         href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" 
         rel="stylesheet"
     >
+    <link rel="stylesheet" 
+        href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" 
+        integrity="sha512-Fo3rlrZj/k7ujTnHg4C+jTq4lV0yB9F9u/W9tGq7Fv6Z7X2JpE2S6I+0R6D5+R9Zl11Fj5L5zR4X6u/V2M6hF2w==" 
+        crossorigin="anonymous" 
+        referrerpolicy="no-referrer" 
+    />
+    <style>
+        body {
+            background-color: #f0f0f0; /* Cinza claro suave */
+        }
+        
+        :root {
+            --if-green: #4CAF50; 
+        }
 
+        .dashboard-container {
+            padding-top: 50px;
+            padding-bottom: 50px;
+        }
+
+        .nav-card {
+            background-color: var(--if-green);
+            color: white;
+            border-radius: 8px; 
+            padding: 30px;
+            text-align: center;
+            transition: transform 0.3s, box-shadow 0.3s;
+            display: block; 
+            text-decoration: none; 
+            height: 100%; 
+        }
+
+        .nav-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
+            color: white; 
+        }
+        
+        .nav-card i {
+            font-size: 4rem; 
+            margin-bottom: 15px;
+        }
+
+        .card-title {
+            font-size: 1.25rem;
+            font-weight: bold;
+            margin: 0;
+            text-transform: uppercase;
+        }
+
+        .welcome-header {
+            margin-bottom: 40px;
+            font-weight: 300; 
+        }
+    </style>
 </head>
-
 <body>
-    <h1> Pagina Inicial </h1>
 
-    <a href="{% url 'agendar' %}"> <button type="button" class="btn btn-primary btn-lg btn-block"> Agendar</button></a>
+<div class="container dashboard-container">
+    
+    <h1 class="welcome-header">Seja Bem-Vindo!</h1>
 
-       <!-- Link para o Bootstrap JS -->
-    <script 
-        src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js">
-    </script>
+    <div class="row row-cols-1 row-cols-md-3 g-4">
+        
+        <div class="col">
+            <a href="#" class="nav-card">
+                <i class="fas fa-chalkboard-teacher"></i> 
+                <p class="card-title">Salas</p>
+            </a>
+        </div>
+
+        <div class="col">
+            <a href="#" class="nav-card">
+                <i class="fas fa-desktop"></i>
+                <p class="card-title">Equipamentos</p>
+            </a>
+        </div>
+
+        <div class="col">
+            <a href="#" class="nav-card">
+                <i class="far fa-calendar-check"></i>
+                <p class="card-title">Minhas Reservas</p>
+            </a>
+        </div>
+
+    </div>
+
+</div>
+
+<script 
+    src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js">
+</script>
 </body>
 </html>
