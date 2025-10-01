@@ -1,5 +1,5 @@
 from django.shortcuts import render
-from .models import login, index, agendar
+from .models import login, index, agdequipamento
 # Create your views here.
 
 
@@ -9,5 +9,5 @@ def login(request):
 def index(request):
     return render(request, 'index.html')
 
-def agendar(request):
-    return render(request, "agendar.html")
+def agdequipamento(request):
+    return render(request, "agdequipamento.html")
