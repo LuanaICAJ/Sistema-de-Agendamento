@@ -1,5 +1,7 @@
 from django.shortcuts import render
-from .models import login, index, agdequipamento
+from .models import login, index, agdequipamento, reservas, Reserva, agdSala, Equipamento,Sala
+
+from app.models import Reserva, Equipamento,Sala
 # Create your views here.
 
 
@@ -10,4 +12,13 @@ def index(request):
     return render(request, 'index.html')
 
 def agdequipamento(request):
-    return render(request, "agdequipamento.html")
+    dados = {'lista_equipamento': Equipamento.objects.all()}
+    return render(request, 'agdequipamento.html')
+
+def reservas(request):
+    dados = {'lista_reservas': Reserva.objects.all()}
+    return render(request, 'reservas.html')
+
+def agdSala(request):
+    dados = {'lista_sala': Sala.objects.all()}
+    return render(request, 'agdSala.html')
