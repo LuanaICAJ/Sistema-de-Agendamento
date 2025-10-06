@@ -13,12 +13,12 @@ def index(request):
 
 def agdequipamento(request):
     dados = {'lista_equipamento': Equipamento.objects.all()}
-    return render(request, 'agdequipamento.html')
+    return render(request, 'agdequipamento.html',dados)
 
 def reservas(request):
     dados = {'lista_reservas': Reserva.objects.all()}
-    return render(request, 'reservas.html')
+    return render(request, 'reservas.html', dados)
 
 def agdSala(request):
     dados = {'lista_sala': Sala.objects.all()}
-    return render(request, 'agdSala.html')
+    return render(request, 'agdSala.html',dados)
