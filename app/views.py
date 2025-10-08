@@ -1,10 +1,10 @@
 from django.shortcuts import redirect, render
-from .models import login, index, agdequipamento, reservas, Reserva, agdSala, Equipamento,Sala
+from .models import login, index, agdequipamento, reservas, agdSala, Equipamento,Sala, ReservaSala,ReservaEquipamento
 from django.contrib import messages
 from datetime import date
 
 
-from app.models import Reserva, Equipamento,Sala
+from app.models import ReservaSala,ReservaEquipamento, Equipamento,Sala
 # Create your views here.
 
 
@@ -23,11 +23,11 @@ def agdequipamento(request):
         equipamento = Equipamento.objects.get(idEquipamento=equipamento_id)
 
         # Verifica se o equipamento já está reservado neste dia e hora
-        conflito = Reserva.objects.filter(equipamento=equipamento, data=data, hora=hora).exists()
+        conflito = ReservaEquipamento.objects.filter(equipamento=equipamento, data=data, hora=hora).exists()
         if conflito:
             messages.error(request, 'Este equipamento já está reservado nesse horário!')
         else:
-            Reserva.objects.create(
+            ReservaEquipamento.objects.create(
                 equipamento=equipamento,
                 data=data,
                 hora=hora,
@@ -43,8 +43,9 @@ def agdequipamento(request):
 
 
 def reservas(request):
-    reservas = Reserva.objects.all().order_by('-data', '-hora')
-    return render(request, 'reservas.html', {'reservas': reservas})
+    reservasSala = ReservaSala.objects.all().order_by('-data', '-hora')
+    reservasEquipamento = ReservaEquipamento.objects.all().order_by('-data', '-hora')
+    return render(request, 'reservas.html', {'reservaSala': reservasSala, 'reservaEquipamento': reservasEquipamento })
 
 
 def agdSala(request):
@@ -56,11 +57,11 @@ def agdSala(request):
         sala = Sala.objects.get(idSala=sala_id)
 
         # Verifica se o equipamento já está reservado neste dia e hora
-        conflito = Reserva.objects.filter(sala=sala, data=data, hora=hora).exists()
+        conflito = ReservaSala.objects.filter(sala=sala, data=data, hora=hora).exists()
         if conflito:
             messages.error(request, 'Esta sala já está reservada nesse horário!')
         else:
-            Reserva.objects.create(
+            ReservaSala.objects.create(
                 sala=sala,
                 data=data,
                 hora=hora,
