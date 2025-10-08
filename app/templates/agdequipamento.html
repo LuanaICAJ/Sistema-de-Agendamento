@@ -105,15 +105,18 @@
                     <label for="tipo_equipamento" class="form-label">Tipo de Equipamento</label> 
                     <select class="form-select" id="tipo_equipamento" name="tipo_equipamento" required> 
                         <option value="" selected>Selecione o Equipamento</option> 
-                        {% for objeto in lista_equipamento %}  
-                            <option value="{{ objeto.id }}">{{ objeto.tipo }}</option> 
-                        {% endfor %} 
+                        {% for e in equipamentos %}
+                            <option value="{{ e.idEquipamento }}">{{ e.tipo }} ({{ e.statusDisponibilidade }})</option>
+                        {% endfor %}
                     </select>   
                 </div> 
 
                 <div class="mb-4"> 
-                    <label for="data_agendamento" class="form-label">Data e Hora da Reserva</label> 
-                    <input type="datetime-local" class="form-control" id="data_agendamento" name="data_agendamento" required> 
+                    <label>Data:</label>
+                    <input type="date" name="data" required><br><br>
+
+                    <label>Hora:</label>
+                    <input type="time" name="hora" required><br><br>
                 </div> 
                 
                 <hr class="my-4"> <div class="d-grid gap-2 d-md-flex justify-content-md-center"> 
@@ -128,6 +131,10 @@
                     
                 </div> 
             </form> 
+
+        {% for message in messages %}
+        <p>{{ message }}</p>
+        {% endfor %}    
             
         </div> 
     </div> 

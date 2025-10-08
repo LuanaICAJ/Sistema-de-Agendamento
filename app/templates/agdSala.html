@@ -104,27 +104,27 @@
                 <i class="fas fa-chalkboard-teacher me-2"></i> Agendar Sala  
             </h1> 
             
-            <form method="post"> 
-                {% csrf_token %} 
-                
+            <form method="post">
+                {% csrf_token %}
                 <div class="mb-3"> 
                     <label for="tipo_sala" class="form-label">Tipo de Sala</label> 
-                    <select class="form-select" id="tipo_sala" name="tipo_sala" required> 
+                    <select class="form-select" id="tipo_sala" name="sala" required> 
                         <option value="" selected>Selecione a Sala</option> 
-                        {% for objeto in lista_sala %}  
-                            <option value="{{ objeto.id }}">{{ objeto.nome }}</option> 
+                        {% for s in salas %}  
+                            <option value="{{ s.idSala }}">{{ s.nome }}</option> 
                         {% endfor %} 
                     </select>   
                 </div> 
 
                 <div class="mb-4"> 
-                    <label for="data_agendamento" class="form-label">Data e Hora da Reserva</label> 
-                    <input type="datetime-local" class="form-control" id="data_agendamento" name="data_agendamento" required> 
+                    <label>Data:</label>
+                    <input type="date" name="data" required><br><br>
+
+                    <label>Hora:</label>
+                    <input type="time" name="hora" required><br><br>
                 </div> 
                 
-                <hr class="my-4"> 
-                
-                <div class="d-grid gap-2 d-md-flex justify-content-md-center"> 
+                <hr class="my-4"> <div class="d-grid gap-2 d-md-flex justify-content-md-center"> 
                     
                     <a href="{% url 'index' %}" class="btn btn-secondary btn-lg order-md-1"> 
                         <i class="fas fa-times me-1"></i> Cancelar 
@@ -136,6 +136,10 @@
                     
                 </div> 
             </form> 
+
+        {% for message in messages %}
+        <p>{{ message }}</p>
+        {% endfor %}    
             
         </div> 
     </div> 

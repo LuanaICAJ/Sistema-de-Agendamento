@@ -2,6 +2,36 @@ from django.db import models
 
 # Create your models here.
 
+class Equipamento(models.Model):
+    idEquipamento = models.AutoField(primary_key=True)
+    tipo = models.CharField(max_length=50)
+    statusDisponibilidade = models.CharField(max_length=50, default='disponível')
+
+    def __str__(self):
+        return self.tipo
+
+
+class Sala(models.Model):
+    idSala = models.AutoField(primary_key=True)
+    nome = models.CharField(max_length=100)
+    capacidade = models.IntegerField()
+    statusDisponibilidade = models.CharField(max_length=50, default='disponível')
+
+    def __str__(self):
+        return self.nome
+
+
+class Reserva(models.Model):
+    data = models.DateField()
+    hora = models.TimeField()
+    status = models.CharField(max_length=50, default='pendente')
+    equipamento = models.ForeignKey(Equipamento, on_delete=models.PROTECT)
+    sala = models.ForeignKey(Sala, on_delete=models.PROTECT)
+
+    def __str__(self):
+        return f"{self.data} - {self.hora} ({self.equipamento})"
+
+
 class login(models.Model):
     def __str__(self):
         return 
@@ -20,33 +50,4 @@ class reservas(models.Model):
     
 class agdSala(models.Model):
     def __str__(self):
-        return 
-    
-class Equipamento(models.Model):
-    idEquipamento = models.IntegerField(primary_key=True)
-    tipo = models.CharField(max_length=50, blank=False)
-    statusDisponibilidade = models.CharField(max_length=50, blank=False)
-    
-    def __str__(self):
-        return (self.tipo)
-    
-class Sala(models.Model):
-    idSala = models.IntegerField(primary_key=True)
-    nome = models.CharField(max_length=100, blank=False)
-    capacidade = models.IntegerField(blank=False)
-    statusDisponibilidade = models.CharField(max_length=50, blank=False)
-    
-    def __str__(self):
-        return (self.nome)
-     
-    
-class Reserva(models.Model):
-    idReserva = models.IntegerField
-    data = models.DateField
-    hora = models.TimeField
-    status = models.CharField(max_length=50)
-    Equipamento = models.ForeignKey(Equipamento, on_delete = models.PROTECT)
-    Sala = models.ForeignKey(Sala, on_delete = models.PROTECT)
-    
-    def __str__(self):
-        return (self.status)
+        return
