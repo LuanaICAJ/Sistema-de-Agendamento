@@ -58,3 +58,7 @@ class reservas(models.Model):
 class agdSala(models.Model):
     def __str__(self):
         return
+
+class editarReserva(models.Model):
+    def __str__(self):
+        return

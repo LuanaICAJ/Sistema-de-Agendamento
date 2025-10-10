@@ -96,7 +96,8 @@
                         <th scope="col">Data</th>
                         <th scope="col">Hora</th>
                         <th scope="col">Sala</th>
-                        <th scope="col">Status</th>                        
+                        <th scope="col">Status</th>
+                        <th scope="col">Ação</th>                        
                     </tr>
                 </thead>
 
@@ -107,6 +108,16 @@
                         <td>{{ r.hora }}</td>
                         <td>{{ r.sala }}</td>
                         <td>{{ r.status }}</td>
+                        <td>
+                            <a href="{% url 'editar-reserva' %}" class="btn btn-warning btn-sm">Editar</a>
+                            <form action=" " method="post" style="display:inline;">
+                            {% csrf_token %}
+                                <button type="submit" class="btn btn-danger btn-sm" onclick="return confirm('Tem certeza que deseja deletar?');">
+                                    Deletar
+                                </button>
+                            </form>
+                        </td>    
+
                     </tr>
                     {%endfor%}
                 </tbody>
@@ -125,7 +136,8 @@
                         <th scope="col">Data</th>
                         <th scope="col">Hora</th>
                         <th scope="col">Equipamento</th>
-                        <th scope="col">Status</th>                        
+                        <th scope="col">Status</th>
+                        <th scope="col">Ação</th>                                                                        
                     </tr>
                 </thead>
 
@@ -136,6 +148,19 @@
                         <td>{{ r.hora }}</td>
                         <td>{{ r.equipamento }}</td>
                         <td>{{ r.status }}</td>
+                        <td>
+                            <a href="{% url 'editar-reserva' %}" class="btn btn-warning btn-sm">Editar</a>
+                            <form action=" " method="post" style="display:inline;">
+                            {% csrf_token %}
+                                <button type="submit" class="btn btn-danger btn-sm" onclick="return confirm('Tem certeza que deseja deletar?');">
+                                    Deletar
+                                </button>
+                            </form>
+                        </td>    
+                    </tr>
+                    {% empty %}
+                    <tr>
+                        <td colspan="4" class="text-center">Nenhum aluno cadastrado.</td>
                     </tr>
                     {%endfor%}
                 </tbody>

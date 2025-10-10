@@ -1,5 +1,5 @@
-from django.shortcuts import redirect, render
-from .models import login, index, agdequipamento, reservas, agdSala, Equipamento,Sala, ReservaSala,ReservaEquipamento
+from django.shortcuts import get_object_or_404, redirect, render
+from .models import login, index, agdequipamento, reservas, agdSala, Equipamento,Sala, ReservaSala,ReservaEquipamento, editarReserva
 from django.contrib import messages
 from datetime import date
 
@@ -7,6 +7,8 @@ from datetime import date
 from app.models import ReservaSala,ReservaEquipamento, Equipamento,Sala
 # Create your views here.
 
+def editarReserva(request):
+    return render (request, 'editarReserva.html')
 
 def login(request):
     return render(request, 'login.html')
@@ -75,4 +77,11 @@ def agdSala(request):
     salas =  Sala.objects.all()
 
     return render(request, 'agdSala.html', {'salas': salas})
+
+def deletar_reserva(request, pk):
+    sala = get_object_or_404(sala, pk=pk)
+    if request.method == 'POST':
+        sala.delete()
+        return redirect('reservas')
+    return render(request, 'deletar_sala.html', {'Reserva': sala})
 
