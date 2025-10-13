@@ -94,7 +94,8 @@
                 <thead>
                     <tr>
                         <th scope="col">Data</th>
-                        <th scope="col">Hora</th>
+                        <th scope="col">Horario Inicial</th>
+                        <th scope="col">Horario Final</th>
                         <th scope="col">Sala</th>
                         <th scope="col">Status</th>
                         <th scope="col">Ação</th>                        
@@ -105,11 +106,12 @@
                     {%for r in reservaSala%} 
                     <tr>
                         <td><i class="fas fa-desktop me-2 text-secondary"></i> {{ r.data }}</td>
-                        <td>{{ r.hora }}</td>
+                        <td>{{ r.hora_inicio }}</td>
+                        <td>{{ r.hora_fim }}</td>
                         <td>{{ r.sala }}</td>
                         <td>{{ r.status }}</td>
                         <td>
-                            <a href="{% url 'editar-reserva' %}" class="btn btn-warning btn-sm">Editar</a>
+                            <a href="" class="btn btn-warning btn-sm">Editar</a>
                             <form action=" " method="post" style="display:inline;">
                             {% csrf_token %}
                                 <button type="submit" class="btn btn-danger btn-sm" onclick="return confirm('Tem certeza que deseja deletar?');">
@@ -117,7 +119,9 @@
                                 </button>
                             </form>
                         </td>    
-
+                    {% empty %}
+                    <tr>
+                        <td colspan="4" class="text-center">Nenhum aluno cadastrado.</td>
                     </tr>
                     {%endfor%}
                 </tbody>
@@ -149,7 +153,7 @@
                         <td>{{ r.equipamento }}</td>
                         <td>{{ r.status }}</td>
                         <td>
-                            <a href="{% url 'editar-reserva' %}" class="btn btn-warning btn-sm">Editar</a>
+                            <a href="{% url '' %}" class="btn btn-warning btn-sm">Editar</a>
                             <form action=" " method="post" style="display:inline;">
                             {% csrf_token %}
                                 <button type="submit" class="btn btn-danger btn-sm" onclick="return confirm('Tem certeza que deseja deletar?');">
@@ -160,7 +164,7 @@
                     </tr>
                     {% empty %}
                     <tr>
-                        <td colspan="4" class="text-center">Nenhum aluno cadastrado.</td>
+                        <td colspan="4" class="text-center">Nenhum Equipamento Reservado.</td>
                     </tr>
                     {%endfor%}
                 </tbody>

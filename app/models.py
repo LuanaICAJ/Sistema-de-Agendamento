@@ -23,21 +23,24 @@ class Sala(models.Model):
 class ReservaSala(models.Model):
     sala = models.ForeignKey(Sala, on_delete=models.PROTECT)
     data = models.DateField()
-    hora = models.TimeField()
+    hora_inicio = models.TimeField()
+    hora_fim = models.TimeField()
+
     status = models.CharField(max_length=50, default='confirmado')
 
     def __str__(self):
-        return f"Sala: {self.sala} ({self.data} {self.hora})"
+        return f"Sala: {self.sala} ({self.data} {self.hora_inicio} {self.hora_fim})"
 
 
 class ReservaEquipamento(models.Model):
     equipamento = models.ForeignKey(Equipamento, on_delete=models.PROTECT)
     data = models.DateField()
-    hora = models.TimeField()
+    hora_inicio = models.TimeField()
+    hora_fim = models.TimeField()
     status = models.CharField(max_length=50, default='confirmado')
 
     def __str__(self):
-        return f"Equipamento: {self.equipamento} ({self.data} {self.hora})"
+        return f"Equipamento: {self.equipamento} ({self.data} {self.hora_inicio} {self.hora_fim})"
 
 class login(models.Model):
     def __str__(self):

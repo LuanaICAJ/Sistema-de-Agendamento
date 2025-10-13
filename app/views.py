@@ -20,20 +20,22 @@ def agdequipamento(request):
     if request.method == 'POST':
         equipamento_id = request.POST.get('equipamento')
         data = request.POST.get('data')
-        hora = request.POST.get('hora')
+        hora_inicio = request.POST.get('hora_inicio')
+        hora_fim = request.POST.get('hora_final')
 
         equipamento = Equipamento.objects.get(idEquipamento=equipamento_id)
 
         # Verifica se o equipamento já está reservado neste dia e hora
-        conflito = ReservaEquipamento.objects.filter(equipamento=equipamento, data=data, hora=hora).exists()
+        conflito = ReservaEquipamento.objects.filter(equipamento=equipamento, data=data, hora_inicio=hora_inicio, hora_fim= hora_fim).exists()
         if conflito:
             messages.error(request, 'Este equipamento já está reservado nesse horário!')
         else:
             ReservaEquipamento.objects.create(
-                equipamento=equipamento,
-                data=data,
-                hora=hora,
-                status='confirmado'
+                equipamento = equipamento,
+                data = data,
+                hora_inicio = hora_inicio,
+                hora_fim = hora_fim,
+                status ='confirmado'
             )
             equipamento.statusDisponibilidade = 'indisponível'
             equipamento.save()
@@ -45,8 +47,8 @@ def agdequipamento(request):
 
 
 def reservas(request):
-    reservasSala = ReservaSala.objects.all().order_by('-data', '-hora')
-    reservasEquipamento = ReservaEquipamento.objects.all().order_by('-data', '-hora')
+    reservasSala = ReservaSala.objects.all().order_by('-data', '-hora_inicio', '-hora_fim')
+    reservasEquipamento = ReservaEquipamento.objects.all().order_by('-data', '-hora_inicio', '-hora_fim')
     return render(request, 'reservas.html', {'reservaSala': reservasSala, 'reservaEquipamento': reservasEquipamento })
 
 
@@ -54,20 +56,22 @@ def agdSala(request):
     if request.method == 'POST':
         sala_id = request.POST.get('sala')
         data = request.POST.get('data')
-        hora = request.POST.get('hora')
-
+        hora_inicio = request.POST.get('hora_inicio')
+        hora_fim = request.POST.get('hora_fim')
+        
         sala = Sala.objects.get(idSala=sala_id)
 
         # Verifica se o equipamento já está reservado neste dia e hora
-        conflito = ReservaSala.objects.filter(sala=sala, data=data, hora=hora).exists()
+        conflito = ReservaSala.objects.filter(sala=sala, data=data, hora_inicio=hora_inicio, hora_fim=hora_fim).exists()
         if conflito:
             messages.error(request, 'Esta sala já está reservada nesse horário!')
         else:
             ReservaSala.objects.create(
-                sala=sala,
-                data=data,
-                hora=hora,
-                status='confirmado'
+                sala = sala,
+                data = data,
+                hora_inicio = hora_inicio,
+                hora_fim = hora_fim,
+                status ='confirmado'
             )
             sala.statusDisponibilidade = 'indisponível'
             sala.save()
