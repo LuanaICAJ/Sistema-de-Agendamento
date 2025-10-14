@@ -2,22 +2,18 @@ from django.shortcuts import get_object_or_404, redirect, render
 from django.contrib import messages
 from .models import (
     login, index, agdequipamento, reservas, agdSala, 
-    Equipamento, Sala, ReservaSala, ReservaEquipamento, editarReserva
+    Equipamento, Sala, ReservaSala, ReservaEquipamento
 )
 
 from datetime import date
 
 # Create your views here.
 
-
 def login(request):
     return render(request, 'login.html')
 
 def index(request):
     return render(request, 'index.html')
-
-def editarReserva(request):
-    return render (request, 'editarReserva.html')
 
 def agdequipamento(request):
     if request.method == 'POST':
