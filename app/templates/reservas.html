@@ -111,7 +111,8 @@
                         <td>{{ r.sala }}</td>
                         <td>{{ r.status }}</td>
                         <td>
-                            <a href="" class="btn btn-warning btn-sm">Editar</a>
+                            <a href="{% url 'editar_reserva_sala' r.id %}" class="btn btn-warning btn-sm">Editar</a>
+                            <a href=" ">Excluir</a>
                             <form action=" " method="post" style="display:inline;">
                             {% csrf_token %}
                                 <button type="submit" class="btn btn-danger btn-sm" onclick="return confirm('Tem certeza que deseja deletar?');">
@@ -138,7 +139,8 @@
                 <thead>
                     <tr>
                         <th scope="col">Data</th>
-                        <th scope="col">Hora</th>
+                        <th scope="col">Horario Inicial</th>
+                        <th scope="col">Horario Final</th>
                         <th scope="col">Equipamento</th>
                         <th scope="col">Status</th>
                         <th scope="col">Ação</th>                                                                        
@@ -149,11 +151,12 @@
                     {%for r in reservaEquipamento%} 
                     <tr>
                         <td><i class="fas fa-desktop me-2 text-secondary"></i> {{ r.data }}</td>
-                        <td>{{ r.hora }}</td>
+                        <td>{{ r.hora_inicio }}</td>
+                        <td>{{ r.hora_fim }}</td>
                         <td>{{ r.equipamento }}</td>
                         <td>{{ r.status }}</td>
                         <td>
-                            <a href="{% url '' %}" class="btn btn-warning btn-sm">Editar</a>
+                            <a href="{% url 'editar_reserva_equipamento' r.id %}" class="btn btn-warning btn-sm">Editar</a>
                             <form action=" " method="post" style="display:inline;">
                             {% csrf_token %}
                                 <button type="submit" class="btn btn-danger btn-sm" onclick="return confirm('Tem certeza que deseja deletar?');">

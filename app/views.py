@@ -1,14 +1,14 @@
 from django.shortcuts import get_object_or_404, redirect, render
-from .models import login, index, agdequipamento, reservas, agdSala, Equipamento,Sala, ReservaSala,ReservaEquipamento, editarReserva
 from django.contrib import messages
+from .models import (
+    login, index, agdequipamento, reservas, agdSala, 
+    Equipamento, Sala, ReservaSala, ReservaEquipamento, editarReserva
+)
+
 from datetime import date
 
-
-from app.models import ReservaSala,ReservaEquipamento, Equipamento,Sala
 # Create your views here.
 
-def editarReserva(request):
-    return render (request, 'editarReserva.html')
 
 def login(request):
     return render(request, 'login.html')
@@ -16,12 +16,15 @@ def login(request):
 def index(request):
     return render(request, 'index.html')
 
+def editarReserva(request):
+    return render (request, 'editarReserva.html')
+
 def agdequipamento(request):
     if request.method == 'POST':
         equipamento_id = request.POST.get('equipamento')
         data = request.POST.get('data')
         hora_inicio = request.POST.get('hora_inicio')
-        hora_fim = request.POST.get('hora_final')
+        hora_fim = request.POST.get('hora_fim')
 
         equipamento = Equipamento.objects.get(idEquipamento=equipamento_id)
 
@@ -44,12 +47,6 @@ def agdequipamento(request):
         
     equipamento = Equipamento.objects.all()
     return render(request, 'agdequipamento.html', {'equipamentos': equipamento})
-
-
-def reservas(request):
-    reservasSala = ReservaSala.objects.all().order_by('-data', '-hora_inicio', '-hora_fim')
-    reservasEquipamento = ReservaEquipamento.objects.all().order_by('-data', '-hora_inicio', '-hora_fim')
-    return render(request, 'reservas.html', {'reservaSala': reservasSala, 'reservaEquipamento': reservasEquipamento })
 
 
 def agdSala(request):
@@ -81,6 +78,34 @@ def agdSala(request):
     salas =  Sala.objects.all()
 
     return render(request, 'agdSala.html', {'salas': salas})
+
+def reservas(request):
+    reservasSala = ReservaSala.objects.all().order_by('-data', '-hora_inicio', '-hora_fim')
+    reservasEquipamento = ReservaEquipamento.objects.all().order_by('-data', '-hora_inicio', '-hora_fim')
+    return render(request, 'reservas.html', {'reservaSala': reservasSala, 'reservaEquipamento': reservasEquipamento })
+
+def editar_reserva_sala(request, pk):
+    reserva = get_object_or_404(ReservaSala, pk=pk)
+    if request.method == 'POST':
+        reserva.data = request.POST.get('data')
+        reserva.hora_inicio = request.POST.get('hora_inicio')
+        reserva.hora_fim = request.POST.get('hora_fim')
+        reserva.save()
+        messages.success(request, 'Reserva de sala atualizada com sucesso!')
+        return redirect('reservas')
+    return render(request, 'editar_reserva_sala.html', {'reserva': reserva})
+
+def editar_reserva_equipamento(request, pk):
+    reserva = get_object_or_404(ReservaEquipamento, pk=pk)
+    if request.method == 'POST':
+        reserva.data = request.POST.get('data')
+        reserva.hora_inicio = request.POST.get('hora_inicio')
+        reserva.hora_fim = request.POST.get('hora_fim')
+        reserva.save()
+        messages.success(request, 'Reserva de equipamento atualizada com sucesso!')
+        return redirect('reservas')
+    return render(request, 'editar_reserva_equipamento.html', {'reserva': reserva})
+
 
 def deletar_reserva(request, pk):
     sala = get_object_or_404(sala, pk=pk)
