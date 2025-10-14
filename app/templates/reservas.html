@@ -112,13 +112,7 @@
                         <td>{{ r.status }}</td>
                         <td>
                             <a href="{% url 'editar_reserva_sala' r.id %}" class="btn btn-warning btn-sm">Editar</a>
-                            <a href=" ">Excluir</a>
-                            <form action=" " method="post" style="display:inline;">
-                            {% csrf_token %}
-                                <button type="submit" class="btn btn-danger btn-sm" onclick="return confirm('Tem certeza que deseja deletar?');">
-                                    Deletar
-                                </button>
-                            </form>
+                            <a href="{% url 'deletar_reserva_sala' r.id %}" class="btn btn-danger btn-sm">Deletar</a>
                         </td>    
                     {% empty %}
                     <tr>
@@ -157,12 +151,7 @@
                         <td>{{ r.status }}</td>
                         <td>
                             <a href="{% url 'editar_reserva_equipamento' r.id %}" class="btn btn-warning btn-sm">Editar</a>
-                            <form action=" " method="post" style="display:inline;">
-                            {% csrf_token %}
-                                <button type="submit" class="btn btn-danger btn-sm" onclick="return confirm('Tem certeza que deseja deletar?');">
-                                    Deletar
-                                </button>
-                            </form>
+                            <a href="{% url 'deletar_reserva_equipamento' r.id %}" class="btn btn-danger btn-sm">Deletar</a>
                         </td>    
                     </tr>
                     {% empty %}

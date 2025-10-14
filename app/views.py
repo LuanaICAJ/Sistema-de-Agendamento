@@ -106,11 +106,18 @@ def editar_reserva_equipamento(request, pk):
         return redirect('reservas')
     return render(request, 'editar_reserva_equipamento.html', {'reserva': reserva})
 
-
-def deletar_reserva(request, pk):
-    sala = get_object_or_404(sala, pk=pk)
+def deletar_reserva_sala(request, pk):
+    reserva = get_object_or_404(ReservaSala, pk=pk)
     if request.method == 'POST':
-        sala.delete()
+        reserva.delete()
+        messages.success(request, 'Reserva de sala excluída com sucesso!')
         return redirect('reservas')
-    return render(request, 'deletar_sala.html', {'Reserva': sala})
+    return render(request, 'deletar_reserva.html', {'reserva': reserva})
 
+def deletar_reserva_equipamento(request, pk):
+    reserva = get_object_or_404(ReservaEquipamento, pk=pk)
+    if request.method == 'POST':
+        reserva.delete()
+        messages.success(request, 'Reserva de equipamento excluída com sucesso!')
+        return redirect('reservas')
+    return render(request, 'deletar_reserva.html', {'reserva': reserva})
