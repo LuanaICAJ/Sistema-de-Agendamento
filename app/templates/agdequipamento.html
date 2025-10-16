@@ -105,7 +105,7 @@
                     <label for="tipo_equipamento" class="form-label">Tipo de Equipamento</label> 
                     <select class="form-select" id="tipo_equipamento" name="equipamento" required> 
                         <option value="" selected>Selecione o Equipamento</option> 
-                        {% for r in equipamentos %}
+                        {% for e in equipamentos %}
                             <option value="{{ e.idEquipamento }}">{{ e.tipo }} ({{ e.statusDisponibilidade }})</option>
                         {% endfor %}
                     </select>   

@@ -1,11 +1,11 @@
 from django.contrib import admin
 from django.urls import path
 from app import views
-from app.views import login, index, agdequipamento, reservas, agdSala
+from app.views import user_login, index, agdequipamento, reservas, agdSala
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('', login),
+    path('login/', views.user_login, name='login'),
     path('index/', index, name="index"),
     path('agdequipamento/', agdequipamento, name="agdequipamento"),
     path('reservas/', reservas, name='reservas'),

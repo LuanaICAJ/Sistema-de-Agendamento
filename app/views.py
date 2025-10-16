@@ -1,7 +1,9 @@
 from django.shortcuts import get_object_or_404, redirect, render
 from django.contrib import messages
+from django.contrib.auth import authenticate, login as auth_login
+from django.contrib.auth.decorators import login_required
 from .models import (
-    login, index, agdequipamento, reservas, agdSala, 
+    index, agdequipamento, reservas, agdSala, 
     Equipamento, Sala, ReservaSala, ReservaEquipamento
 )
 
@@ -9,12 +11,25 @@ from datetime import date
 
 # Create your views here.
 
-def login(request):
+def user_login(request): 
+    if request.method == 'POST':
+        email = request.POST.get('email')
+        password = request.POST.get('password')
+        user = authenticate(request, username=email, password=password)
+        
+        if user is not None:
+            auth_login(request, user)
+            messages.success(request, 'Login realizado com sucesso!')
+            return redirect('index') 
+        else:
+            messages.error(request, 'Email ou senha inválidos.')      
     return render(request, 'login.html')
 
+@login_required
 def index(request):
     return render(request, 'index.html')
 
+@login_required
 def agdequipamento(request):
     if request.method == 'POST':
         equipamento_id = request.POST.get('equipamento')
@@ -45,6 +60,7 @@ def agdequipamento(request):
     return render(request, 'agdequipamento.html', {'equipamentos': equipamento})
 
 
+@login_required
 def agdSala(request):
     if request.method == 'POST':
         sala_id = request.POST.get('sala')
@@ -75,11 +91,13 @@ def agdSala(request):
 
     return render(request, 'agdSala.html', {'salas': salas})
 
+@login_required
 def reservas(request):
     reservasSala = ReservaSala.objects.all().order_by('-data', '-hora_inicio', '-hora_fim')
     reservasEquipamento = ReservaEquipamento.objects.all().order_by('-data', '-hora_inicio', '-hora_fim')
     return render(request, 'reservas.html', {'reservaSala': reservasSala, 'reservaEquipamento': reservasEquipamento })
 
+@login_required
 def editar_reserva_sala(request, pk):
     reserva = get_object_or_404(ReservaSala, pk=pk)
     if request.method == 'POST':
@@ -91,6 +109,7 @@ def editar_reserva_sala(request, pk):
         return redirect('reservas')
     return render(request, 'editar_reserva_sala.html', {'reserva': reserva})
 
+@login_required
 def editar_reserva_equipamento(request, pk):
     reserva = get_object_or_404(ReservaEquipamento, pk=pk)
     if request.method == 'POST':
@@ -102,6 +121,7 @@ def editar_reserva_equipamento(request, pk):
         return redirect('reservas')
     return render(request, 'editar_reserva_equipamento.html', {'reserva': reserva})
 
+@login_required
 def deletar_reserva_sala(request, pk):
     reserva = get_object_or_404(ReservaSala, pk=pk)
     if request.method == 'POST':
@@ -110,6 +130,7 @@ def deletar_reserva_sala(request, pk):
         return redirect('reservas')
     return render(request, 'deletar_reserva.html', {'reserva': reserva})
 
+@login_required
 def deletar_reserva_equipamento(request, pk):
     reserva = get_object_or_404(ReservaEquipamento, pk=pk)
     if request.method == 'POST':
