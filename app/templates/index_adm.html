@@ -107,7 +107,7 @@
     <div class="row row-cols-1 row-cols-sm-2 row-cols-md-4 g-4">
 
         <div class="col">
-            <a href="#" class="nav-card">
+            <a href="{#}" class="nav-card">
                 <i class="far fa-calendar-check"></i>
                 <p class="card-title">Gerenciar Reservas</p>
             </a>
@@ -115,14 +115,14 @@
         
             
             <div class="col">
-                <a href="#" class="nav-card blue"> 
+                <a href="{% url 'cadastrar_sala' %}" class="nav-card blue"> 
                     <i class="fa-solid fa-house"></i>
                     <p class="card-title">Cadastrar Salas</p>
                 </a>
             </div>
 
             <div class="col">
-                <a href="#" class="nav-card red"> 
+                <a href="{% url 'cadastrar_equipamento' %}" class="nav-card red"> 
                     <i class="fa-solid fa-laptop"></i>
                     <p class="card-title">Cadastrar Equipamento</p>
                 </a>
