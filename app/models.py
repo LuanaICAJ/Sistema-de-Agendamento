@@ -65,3 +65,11 @@ class agdSala(models.Model):
 class editarReserva(models.Model):
     def __str__(self):
         return
+    
+class gerenciar_equipamento(models.Model):
+    def __str__(self):
+        return
+    
+class gerenciar_sala(models.Model):
+    def __str__(self):
+        return

@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard - Gestão de Reservas</title>
+    <link 
+        href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" 
+        rel="stylesheet"
+    >
+    <link rel="stylesheet" 
+        href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" 
+        xintegrity="sha512-Fo3rlrZj/k7ujTnHg4C+jTq4lV0yB9F9u/W9tGq7Fv6Z7X2JpE2S6I+0R6D5+R9Zl11Fj5L5zR4X6u/V2M6hF2w==" 
+        crossorigin="anonymous" 
+        referrerpolicy="no-referrer" 
+    />
+    <style>
+        body {
+            background-color: #f0f0f0; /* Cinza claro suave */
+        }
+        
+        :root {
+            --if-green: #4CAF50; 
+            --if-blue: #3498db;
+            --if-red: #e74c3c;
+        }
+
+        .dashboard-container {
+            padding-top: 50px;
+            padding-bottom: 50px;
+        }
+
+        .nav-card {
+            background-color: var(--if-green);
+            color: white;
+            border-radius: 8px; 
+            padding: 30px;
+            text-align: center;
+            transition: transform 0.3s, box-shadow 0.3s;
+            display: block; 
+            text-decoration: none; 
+            height: 100%; 
+        }
+
+        .nav-card.blue {
+            background-color: var(--if-blue);
+        }
+
+        .nav-card.red {
+            background-color: var(--if-red);
+        }
+
+        .nav-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
+            color: white; 
+        }
+        
+        .nav-card i {
+            font-size: 4rem; 
+            margin-bottom: 15px;
+        }
+
+        .card-title {
+            font-size: 1.25rem;
+            font-weight: bold;
+            margin: 0;
+            text-transform: uppercase;
+        }
+
+        .welcome-header {
+            margin-bottom: 40px;
+            font-weight: 300; 
+        }
+        
+        .logout-link {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            text-decoration: none;
+            color: #333;
+            font-weight: 500;
+            padding: 5px 10px;
+            border-radius: 5px;
+            transition: background-color 0.2s;
+        }
+        
+        .logout-link:hover {
+            background-color: #ddd;
+            color: #000;
+        }
+        
+    </style>
+</head>
+<body>
+
+<a href="{% url 'logout' %}" class="logout-link">
+    <i class="fas fa-sign-out-alt"></i> Sair
+</a>
+
+<div class="container dashboard-container">
+    
+    <h1 class="welcome-header">
+        Olá, {{ user.get_username|title }}! Seja Bem-Vindo(a).
+    </h1>
+
+    <div class="row row-cols-1 row-cols-sm-2 row-cols-md-4 g-4">
+
+        <div class="col">
+            <a href="#" class="nav-card">
+                <i class="far fa-calendar-check"></i>
+                <p class="card-title">Gerenciar Reservas</p>
+            </a>
+        </div>
+        
+            
+            <div class="col">
+                <a href="#" class="nav-card blue"> 
+                    <i class="fa-solid fa-house"></i>
+                    <p class="card-title">Cadastrar Salas</p>
+                </a>
+            </div>
+
+            <div class="col">
+                <a href="#" class="nav-card red"> 
+                    <i class="fa-solid fa-laptop"></i>
+                    <p class="card-title">Cadastrar Equipamento</p>
+                </a>
+            </div>
+
+            <div class="col">
+                <a href="#" class="nav-card" style="background-color: #9b59b6;"> 
+                    <i class="fas fa-users-cog"></i>
+                    <p class="card-title">Gerenciar Usuários</p>
+                </a>
+            </div>
+
+    </div>
+
+</div>
+
+<script 
+    src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js">
+</script>
+</body>
+</html>

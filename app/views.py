@@ -1,6 +1,6 @@
 from django.shortcuts import get_object_or_404, redirect, render
 from django.contrib import messages
-from django.contrib.auth import authenticate, login as auth_login
+from django.contrib.auth import authenticate, login as auth_login, logout as auth_logout
 from django.contrib.auth.decorators import login_required
 from .models import (
     index, agdequipamento, reservas, agdSala, 
@@ -138,3 +138,53 @@ def deletar_reserva_equipamento(request, pk):
         messages.success(request, 'Reserva de equipamento excluída com sucesso!')
         return redirect('reservas')
     return render(request, 'deletar_reserva.html', {'reserva': reserva})
+
+@login_required
+def index_adm(request):
+    return render(request, 'index_adm.html')
+
+@login_required
+def user_logout(request): # Função para deslogar o usuário
+    auth_logout(request)
+    messages.info(request, "Você foi desconectado com sucesso.")
+    return redirect('login')
+
+def CadastrarEquipamento(request):
+    if request.method == 'POST':
+        # Capturar os dados do formulário
+        tipo = request.POST.get('tipo')
+        statusDisponibilidade = request.POST.get('statusDisponibilidade')
+
+        # Criar o novo objeto Equipamento
+        Equipamento.objects.create(
+            tipo=tipo,
+            statusDisponibilidade=statusDisponibilidade,
+        )
+        
+        messages.success(request, f'O equipamento "{tipo}" foi cadastrado com sucesso!')
+
+        # Redirecionar para a página
+        return redirect('cadastrar_equipamento')
+        
+    return render(request, 'cadastrar_equipamento.html')
+
+def CadastrarSala(request):
+    if request.method == 'POST':
+        # Capturar os dados do formulário
+        nome = request.POST.get('nome')
+        capacidade = request.POST.get('capacidade')
+        statusDisponibilidade = request.POST.get('statusDisponibilidade')
+
+        # Criar o novo objeto Equipamento
+        Sala.objects.create(
+            nome=nome,
+            capacidade=capacidade,
+            statusDisponibilidade=statusDisponibilidade,
+        )
+        
+        messages.success(request, f'A sala "{nome}" foi cadastrada com sucesso!')
+
+        # Redirecionar para a página
+        return redirect('cadastrar_sala')
+        
+    return render(request, 'cadastrar_sala.html')
