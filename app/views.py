@@ -188,3 +188,8 @@ def CadastrarSala(request):
         return redirect('cadastrar_sala')
         
     return render(request, 'cadastrar_sala.html')
+
+def reserva_for_adms(request):
+    reservasSala = ReservaSala.objects.all().order_by('-data', '-hora_inicio', '-hora_fim')
+    reservasEquipamento = ReservaEquipamento.objects.all().order_by('-data', '-hora_inicio', '-hora_fim')
+    return render(request, 'reserva_for_adms.html', {'reservaSala': reservasSala, 'reservaEquipamento': reservasEquipamento})

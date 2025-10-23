@@ -81,7 +81,7 @@
     <div class="container dashboard-container">
         
         <h1 class="welcome-header"> 
-            <i class="fas fa-calendar-alt me-2"></i> Minhas Reservas 
+            <i class="fas fa-calendar-alt me-2"></i> Todas as Reservas 
         </h1>
         
         <div class= "content center">
@@ -122,7 +122,7 @@
                         </td>    
                     {% empty %}
                     <tr>
-                        <td colspan="4" class="text-center">Nenhum aluno cadastrado.</td>
+                        <td colspan="4" class="text-center">Nenhuma Sala reservada.</td>
                     </tr>
                     {%endfor%}
                 </tbody>
@@ -170,7 +170,7 @@
         </div>
        
 
-        <a href="{% url 'index' %}" class="btn btn-secondary btn-lg order-md-1"> 
+        <a href="{% url 'index_adm' %}" class="btn btn-secondary btn-lg order-md-1"> 
             <i class="fas fa-times me-1"></i> Voltar a Página Inicial 
         </a> 
         

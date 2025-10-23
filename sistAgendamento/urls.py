@@ -1,7 +1,7 @@
 from django.contrib import admin
 from django.urls import path
 from app import views
-from app.views import user_login, index, agdequipamento, reservas, agdSala, user_logout, index_adm
+from app.views import user_login, index, agdequipamento, reservas, agdSala, user_logout, index_adm, reserva_for_adms
 
 urlpatterns = [
     path('admin/', admin.site.urls),
@@ -18,4 +18,5 @@ urlpatterns = [
     path('index_adm/', views.index_adm, name="index_adm"),
     path('cadastrar_equipamento/', views.CadastrarEquipamento, name="cadastrar_equipamento"),
     path('cadastrar_sala/', views.CadastrarSala, name="cadastrar_sala"),
+    path('reservas_adms/', views.reserva_for_adms, name="reservas_adms")
 ]

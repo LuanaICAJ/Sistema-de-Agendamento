@@ -95,8 +95,12 @@
         Olá, {{ user.get_username|title }}! Seja Bem-Vindo(a).
     </h1>
 
-    <div class="row row-cols-1 row-cols-md-3 g-4">
-        
+        {% for message in messages %}
+        <p>{{ message }}</p>
+        {% endfor %}  
+
+    <div class="row row-cols-1 row-cols-md-3 g-4">   
+
         <div class="col">
             <a href="{% url 'sala' %}" class="nav-card">
                 <i class="fas fa-chalkboard-teacher"></i> 
