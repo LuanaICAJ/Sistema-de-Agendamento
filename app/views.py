@@ -149,6 +149,7 @@ def user_logout(request): # Função para deslogar o usuário
     messages.info(request, "Você foi desconectado com sucesso.")
     return redirect('login')
 
+@login_required
 def CadastrarEquipamento(request):
     if request.method == 'POST':
         # Capturar os dados do formulário
@@ -168,6 +169,7 @@ def CadastrarEquipamento(request):
         
     return render(request, 'cadastrar_equipamento.html')
 
+@login_required
 def CadastrarSala(request):
     if request.method == 'POST':
         # Capturar os dados do formulário
@@ -185,11 +187,63 @@ def CadastrarSala(request):
         messages.success(request, f'A sala "{nome}" foi cadastrada com sucesso!')
 
         # Redirecionar para a página
-        return redirect('cadastrar_sala')
+        return redirect('listar_salas')
         
     return render(request, 'cadastrar_sala.html')
 
+@login_required
 def reserva_for_adms(request):
     reservasSala = ReservaSala.objects.all().order_by('-data', '-hora_inicio', '-hora_fim')
     reservasEquipamento = ReservaEquipamento.objects.all().order_by('-data', '-hora_inicio', '-hora_fim')
     return render(request, 'reserva_for_adms.html', {'reservaSala': reservasSala, 'reservaEquipamento': reservasEquipamento})
+
+@login_required
+def listarSalas(request):
+    listarSalas = Sala.objects.all()
+    return render (request, 'listar_salas.html', {'listarSalas':listarSalas})
+
+@login_required
+def listarEquipamentos(request):
+    listarEquipamentos = Equipamento.objects.all()
+    return render (request, 'listar_equipamentos.html', {'listarEquipamentos':listarEquipamentos})
+
+@login_required
+def deletar_sala (request, pk):
+    sala = get_object_or_404(Sala, pk=pk)
+    if request.method == 'POST':
+        sala.delete()
+        messages.success(request, 'Sala excluída com sucesso!')
+        return redirect('listar_salas')
+    return render(request, 'deletar_sala.html', {'sala': sala})
+
+@login_required
+def deletar_equipamento (request, pk):
+    equipamento = get_object_or_404(Equipamento, pk=pk)
+    if request.method == 'POST':
+        equipamento.delete()
+        messages.success(request, 'Equipamento excluído com sucesso!')
+        return redirect('listar_equipamentos')
+    return render(request, 'deletar_equipamento.html', {'equipamento': equipamento})
+
+@login_required
+def editar_sala(request, pk):
+    sala = get_object_or_404(Sala, pk=pk)
+    if request.method == 'POST':
+        sala.nome = request.POST.get('nome')
+        sala.capacidade = request.POST.get('capacidade')
+        sala.statusDisponibilidade = request.POST.get('statusDisponibilidade')
+        sala.save()
+        messages.success(request, 'Cadastro de sala atualizado com sucesso!')
+        return redirect('listar_salas')
+    return render(request, 'editar_sala.html', {'sala': sala})
+
+@login_required
+def editar_equipamento(request, pk):
+    equipamento = get_object_or_404(Equipamento, pk=pk)
+    if request.method == 'POST':
+        equipamento.tipo = request.POST.get('tipo')
+        equipamento.statusDisponibilidade = request.POST.get('statusDisponibilidade')
+        equipamento.save()
+        messages.success(request, 'Cadastro de equipamento atualizado com sucesso!')
+        return redirect('listar_equipamentos')
+    return render(request, 'editar_equipamento.html', {'equipamento': equipamento})

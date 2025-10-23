@@ -1,0 +1,136 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Lista de Salas</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" integrity="sha512-Fo3rlrZj/k7ujTnHg4C+jTq4lV0yB9F9u/W9tGq7Fv6Z7X2JpE2S6I+0R6D5+R9Zl11Fj5L5zR4X6u/V2M6hF2w==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+
+    <style>
+        :root {
+            --if-green: #4CAF50; 
+            --if-green-dark: #45a049;
+        }
+        
+        body {
+            background-color: #ffffff; /* Fundo branco */
+            position: relative;
+        }
+        
+        .page-background {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            overflow: hidden;
+            z-index: -1; 
+        }
+
+        .page-background::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            /* Imagem de fundo do template original */
+            background-image: url('https://www.ifbaiano.edu.br/unidades/bonfim/files/2019/09/imagem-destacada-alunas.jpg');
+            background-size: cover;
+            background-position: center;
+            background-repeat: no-repeat;
+            opacity: 0.15; 
+        }
+        
+        .dashboard-container {
+            padding-top: 50px;
+            padding-bottom: 50px;
+            min-height: 100vh;
+        }
+
+        .welcome-header {
+            margin-bottom: 40px;
+            font-weight: 300; 
+            text-align: center; 
+            color: #333;
+        }
+
+        /* Estilização da Tabela para seguir o padrão */
+        .table {
+            background-color: white; 
+            border-radius: 8px;
+            overflow: hidden; 
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.08); 
+        }
+
+        .table thead th {
+            background-color: var(--if-green); 
+            color: white;
+            font-weight: 500;
+            border-bottom: none;
+        }
+    </style>
+</head>
+
+<body>
+    
+    <div class="page-background"></div>
+
+    <div class="container dashboard-container">
+        
+        <h1 class="welcome-header"> 
+            <i class="fas fa-calendar-alt me-2"></i> Lista de Salas
+        </h1>
+        
+        <div class= "content center">
+            {% for message in messages %}
+            <p>{{ message }}</p>
+            {% endfor %}  
+        </div>
+
+        <div class="table-responsive">
+            <table class="table table-striped table-hover align-middle">
+                <thead>
+                    <tr>
+                        <th scope="col">Sala</th>
+                        <th scope="col">Capacidade</th>
+                        <th scope="col">Status</th>
+                        <th scope="col">Ação</th>                        
+                    </tr>
+                </thead>
+
+                <tbody>
+                    {%for r in listarSalas%} 
+                    <tr>
+                        <td>{{ r.nome }}</td>
+                        <td>{{ r.capacidade }}</td>
+                        <td>{{ r.statusDisponibilidade }}</td>
+                        <td>
+                            <a href="{% url 'editar_sala' r.pk %}" class="btn btn-warning btn-sm">Editar</a>
+                            <a href="{% url 'deletar_sala' r.pk %}" class="btn btn-danger btn-sm">Deletar</a>
+                        </td>    
+                    {% empty %}
+                    <tr>
+                        <td colspan="4" class="text-center">Nenhuma Sala cadastrada.</td>
+                    </tr>
+                    {%endfor%}
+                </tbody>
+            </table>
+        </div>
+       
+
+        <a href="{% url 'index_adm' %}" class="btn btn-secondary btn-lg order-md-1"> 
+            <i class="fas fa-times me-1"></i> Voltar a Página Inicial 
+        </a> 
+
+        <a href="{% url 'cadastrar_sala' %}" class="btn btn-success btn-lg order-md-1"> 
+            <i class="fas fa-times me-1"></i> Cadastrar Sala 
+        </a> 
+        
+    </div>
+    
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

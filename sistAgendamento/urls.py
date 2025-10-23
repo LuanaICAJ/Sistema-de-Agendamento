@@ -18,5 +18,11 @@ urlpatterns = [
     path('index_adm/', views.index_adm, name="index_adm"),
     path('cadastrar_equipamento/', views.CadastrarEquipamento, name="cadastrar_equipamento"),
     path('cadastrar_sala/', views.CadastrarSala, name="cadastrar_sala"),
-    path('reservas_adms/', views.reserva_for_adms, name="reservas_adms")
+    path('reservas_adms/', views.reserva_for_adms, name="reservas_adms"),
+    path('listar_salas/', views.listarSalas, name="listar_salas"),
+    path('listar_salas/sala/deletar/<int:pk>/', views.deletar_sala, name='deletar_sala'),
+    path('listar_salas/sala/editar/<int:pk>/', views.editar_sala, name='editar_sala'),
+    path('listar_equipamentos/', views.listarEquipamentos, name="listar_equipamentos"),
+    path('listar_equipamentos/equipamento/deletar/<int:pk>/', views.deletar_equipamento, name='deletar_equipamento'),
+    path('listar_equipamentos/equipamento/editar/<int:pk>/', views.editar_equipamento, name='editar_equipamento'),
 ]

@@ -107,7 +107,7 @@
     <div class="row row-cols-1 row-cols-sm-2 row-cols-md-4 g-4">
 
         <div class="col">
-            <a href="{#}" class="nav-card">
+            <a href="{% url 'reservas_adms' %}" class="nav-card">
                 <i class="far fa-calendar-check"></i>
                 <p class="card-title">Gerenciar Reservas</p>
             </a>
@@ -134,14 +134,20 @@
                     <p class="card-title">Gerenciar Usuários</p>
                 </a>
             </div>
+            
+            <div class="col">
+                <a href="{% url 'listar_salas' %}" class="nav-card blue"> 
+                    <i class="fa-solid fa-list"></i>
+                    <p class="card-title">Listar Salas</p>
+                </a>
+            </div>
 
-
-        <div class="col">
-            <a href="{% url 'reservas_adms' %}" class="nav-card">
-                <i class="far fa-calendar-check"></i>
-                <p class="card-title"> Reservas</p>
-            </a>
-        </div>
+              <div class="col">
+                <a href="{% url 'listar_equipamentos' %}" class="nav-card red"> 
+                    <i class="fa-solid fa-list"></i>
+                    <p class="card-title">Listar Equipamentos</p>
+                </a>
+            </div>
 
     </div>
 
