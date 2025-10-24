@@ -2,6 +2,7 @@ from django.shortcuts import get_object_or_404, redirect, render
 from django.contrib import messages
 from django.contrib.auth import authenticate, login as auth_login, logout as auth_logout
 from django.contrib.auth.decorators import login_required
+from django.contrib.admin.views.decorators import staff_member_required
 from .models import (
     index, agdequipamento, reservas, agdSala, 
     Equipamento, Sala, ReservaSala, ReservaEquipamento
@@ -10,6 +11,20 @@ from .models import (
 from datetime import date
 
 # Create your views here.
+
+#def user_login(request): 
+    #if request.method == 'POST':
+        #email = request.POST.get('email')
+        #password = request.POST.get('password')
+        #user = authenticate(request, username=email, password=password)
+        
+        #if user is not None:
+            #auth_login(request, user)
+            #messages.success(request, 'Login realizado com sucesso!')
+            #return redirect('index') 
+        #else:
+            #messages.error(request, 'Email ou senha inválidos.')      
+    #return render(request, 'login.html')
 
 def user_login(request): 
     if request.method == 'POST':
@@ -20,9 +35,15 @@ def user_login(request):
         if user is not None:
             auth_login(request, user)
             messages.success(request, 'Login realizado com sucesso!')
-            return redirect('index') 
+
+            # Redireciona conforme o tipo de usuário
+            if user.is_staff:
+                return redirect('index_adm')  # Página do admin
+            else:
+                return redirect('index')  # Página do usuário comum
         else:
             messages.error(request, 'Email ou senha inválidos.')      
+
     return render(request, 'login.html')
 
 @login_required
@@ -181,7 +202,7 @@ def user_logout(request): # Função para deslogar o usuário
     messages.info(request, "Você foi desconectado com sucesso.")
     return redirect('login')
 
-@login_required
+@staff_member_required
 def CadastrarEquipamento(request):
     if request.method == 'POST':
         # Capturar os dados do formulário
@@ -201,7 +222,7 @@ def CadastrarEquipamento(request):
         
     return render(request, 'cadastrar_equipamento.html')
 
-@login_required
+@staff_member_required
 def CadastrarSala(request):
     if request.method == 'POST':
         # Capturar os dados do formulário
@@ -223,23 +244,23 @@ def CadastrarSala(request):
         
     return render(request, 'cadastrar_sala.html')
 
-@login_required
+@staff_member_required
 def reserva_for_adms(request):
     reservasSala = ReservaSala.objects.all().order_by('-data', '-hora_inicio', '-hora_fim')
     reservasEquipamento = ReservaEquipamento.objects.all().order_by('-data', '-hora_inicio', '-hora_fim')
     return render(request, 'reserva_for_adms.html', {'reservaSala': reservasSala, 'reservaEquipamento': reservasEquipamento})
 
-@login_required
+@staff_member_required
 def listarSalas(request):
     listarSalas = Sala.objects.all()
     return render (request, 'listar_salas.html', {'listarSalas':listarSalas})
 
-@login_required
+@staff_member_required
 def listarEquipamentos(request):
     listarEquipamentos = Equipamento.objects.all()
     return render (request, 'listar_equipamentos.html', {'listarEquipamentos':listarEquipamentos})
 
-@login_required
+@staff_member_required
 def deletar_sala (request, pk):
     sala = get_object_or_404(Sala, pk=pk)
     if request.method == 'POST':
@@ -248,7 +269,7 @@ def deletar_sala (request, pk):
         return redirect('listar_salas')
     return render(request, 'deletar_sala.html', {'sala': sala})
 
-@login_required
+@staff_member_required
 def deletar_equipamento (request, pk):
     equipamento = get_object_or_404(Equipamento, pk=pk)
     if request.method == 'POST':
@@ -257,7 +278,7 @@ def deletar_equipamento (request, pk):
         return redirect('listar_equipamentos')
     return render(request, 'deletar_equipamento.html', {'equipamento': equipamento})
 
-@login_required
+@staff_member_required
 def editar_sala(request, pk):
     sala = get_object_or_404(Sala, pk=pk)
     if request.method == 'POST':
@@ -269,7 +290,7 @@ def editar_sala(request, pk):
         return redirect('listar_salas')
     return render(request, 'editar_sala.html', {'sala': sala})
 
-@login_required
+@staff_member_required
 def editar_equipamento(request, pk):
     equipamento = get_object_or_404(Equipamento, pk=pk)
     if request.method == 'POST':
