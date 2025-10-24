@@ -33,20 +33,44 @@ def index(request):
 def agdequipamento(request):
     if request.method == 'POST':
         equipamento_id = request.POST.get('equipamento')
-        data = request.POST.get('data')
+        data_str = request.POST.get('data') 
         hora_inicio = request.POST.get('hora_inicio')
         hora_fim = request.POST.get('hora_fim')
 
-        equipamento = Equipamento.objects.get(idEquipamento=equipamento_id)
+        # VALIDAÇÃO DE DATA NO PASSADO
+        try:
+            data_reserva = date.fromisoformat(data_str) # Converte a data para objeto date
+        except ValueError:
+            messages.error(request, 'Formato de data inválido. Por favor, utilize o formato YYYY-MM-DD.')
+            equipamentos = Equipamento.objects.all()
+            return render(request, 'agdequipamento.html', {'equipamentos': equipamentos})
+
+        data_hoje = date.today()
+        
+        if data_reserva < data_hoje:
+            messages.error(request, 'Não é possível agendar equipamentos para datas passadas.')
+            # Retorna para a página, exibindo a mensagem de erro
+            equipamentos = Equipamento.objects.all()
+            return render(request, 'agdequipamento.html', {'equipamentos': equipamentos})
+            
+        # CONTINUA O PROCESSO DE RESERVA (Conflito e Criação)
+
+        equipamento = Equipamento.objects.get(pk=equipamento_id) 
 
         # Verifica se o equipamento já está reservado neste dia e hora
-        conflito = ReservaEquipamento.objects.filter(equipamento=equipamento, data=data, hora_inicio=hora_inicio, hora_fim= hora_fim).exists()
+        conflito = ReservaEquipamento.objects.filter(
+            equipamento=equipamento, 
+            data=data_reserva, # Usa o objeto date validado
+            hora_inicio=hora_inicio, 
+            hora_fim= hora_fim
+        ).exists()
+        
         if conflito:
             messages.error(request, 'Este equipamento já está reservado nesse horário!')
         else:
             ReservaEquipamento.objects.create(
                 equipamento = equipamento,
-                data = data,
+                data = data_reserva, # Usa o objeto date validado
                 hora_inicio = hora_inicio,
                 hora_fim = hora_fim,
                 status ='confirmado'
@@ -56,39 +80,47 @@ def agdequipamento(request):
             messages.success(request, 'Reserva feita com sucesso!')
             return redirect('reservas')
         
-    equipamento = Equipamento.objects.all()
-    return render(request, 'agdequipamento.html', {'equipamentos': equipamento})
+    # Se for GET ou se houve um erro de conflito, carrega a lista de equipamentos
+    equipamentos = Equipamento.objects.all()
+    return render(request, 'agdequipamento.html', {'equipamentos': equipamentos})
 
 
 @login_required
 def agdSala(request):
     if request.method == 'POST':
         sala_id = request.POST.get('sala')
-        data = request.POST.get('data')
+        data_str = request.POST.get('data') 
         hora_inicio = request.POST.get('hora_inicio')
         hora_fim = request.POST.get('hora_fim')
         
+        # VALIDAÇÃO DE DATA NO PASSADO
+        data_reserva = date.fromisoformat(data_str) # Converte a data do formulário para objeto date
+        data_hoje = date.today()
+        
+        if data_reserva < data_hoje:
+            messages.error(request, 'Não é possível agendar para datas passadas.')
+            # Retorna para a página, exibindo a mensagem de erro
+            salas = Sala.objects.all()
+            return render(request, 'agdSala.html', {'salas': salas}) 
+            
+        # Continua o processo de reserva (conflito, criação, etc.)
         sala = Sala.objects.get(idSala=sala_id)
 
         # Verifica se o equipamento já está reservado neste dia e hora
-        conflito = ReservaSala.objects.filter(sala=sala, data=data, hora_inicio=hora_inicio, hora_fim=hora_fim).exists()
+        conflito = ReservaSala.objects.filter(sala=sala, data=data_reserva, hora_inicio=hora_inicio, hora_fim=hora_fim).exists()
+        
         if conflito:
             messages.error(request, 'Esta sala já está reservada nesse horário!')
         else:
             ReservaSala.objects.create(
                 sala = sala,
-                data = data,
-                hora_inicio = hora_inicio,
-                hora_fim = hora_fim,
-                status ='confirmado'
+                data = data_reserva, 
             )
-            sala.statusDisponibilidade = 'indisponível'
-            sala.save()
+
             messages.success(request, 'Reserva feita com sucesso!')
             return redirect('reservas')
         
-    salas =  Sala.objects.all()
-
+    salas = Sala.objects.all()
     return render(request, 'agdSala.html', {'salas': salas})
 
 @login_required
