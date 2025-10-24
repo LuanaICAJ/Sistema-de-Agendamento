@@ -192,7 +192,7 @@ def deletar_reserva_equipamento(request, pk):
         return redirect('reservas')
     return render(request, 'deletar_reserva.html', {'reserva': reserva})
 
-@login_required
+@staff_member_required
 def index_adm(request):
     return render(request, 'index_adm.html')
 
@@ -250,12 +250,12 @@ def reserva_for_adms(request):
     reservasEquipamento = ReservaEquipamento.objects.all().order_by('-data', '-hora_inicio', '-hora_fim')
     return render(request, 'reserva_for_adms.html', {'reservaSala': reservasSala, 'reservaEquipamento': reservasEquipamento})
 
-@staff_member_required
+@login_required
 def listarSalas(request):
     listarSalas = Sala.objects.all()
     return render (request, 'listar_salas.html', {'listarSalas':listarSalas})
 
-@staff_member_required
+@login_required
 def listarEquipamentos(request):
     listarEquipamentos = Equipamento.objects.all()
     return render (request, 'listar_equipamentos.html', {'listarEquipamentos':listarEquipamentos})
