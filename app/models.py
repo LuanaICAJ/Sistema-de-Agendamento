@@ -23,7 +23,7 @@ class Sala(models.Model):
 class ReservaSala(models.Model):
     sala = models.ForeignKey(Sala, on_delete=models.PROTECT)
     data = models.DateField()
-    hora_inicio = models.TimeField()
+    hora_inicio = models.TimeField(null=True, blank=True)
     hora_fim = models.TimeField()
 
     status = models.CharField(max_length=50, default='confirmado')
