@@ -111,11 +111,19 @@ def agdSala(request):
     if request.method == 'POST':
         sala_id = request.POST.get('sala')
         data_str = request.POST.get('data') 
-        hora_inicio = request.POST.get('hora_inicio')
-        hora_fim = request.POST.get('hora_fim')
+        hora_inicio = request.POST.get('hora_inicio') # CAPTURADO
+        hora_fim = request.POST.get('hora_fim')       # CAPTURADO
         
         # VALIDAÇÃO DE DATA NO PASSADO
-        data_reserva = date.fromisoformat(data_str) # Converte a data do formulário para objeto date
+        # **RECOMENDAÇÃO: Adicione um bloco try/except aqui para 'data_str' como em agdequipamento**
+        try:
+            data_reserva = date.fromisoformat(data_str) # Converte a data do formulário para objeto date
+        except ValueError:
+             messages.error(request, 'Formato de data inválido. Por favor, utilize o formato YYYY-MM-DD.')
+             salas = Sala.objects.all()
+             return render(request, 'agdSala.html', {'salas': salas})
+
+
         data_hoje = date.today()
         
         if data_reserva < data_hoje:
@@ -125,22 +133,33 @@ def agdSala(request):
             return render(request, 'agdSala.html', {'salas': salas}) 
             
         # Continua o processo de reserva (conflito, criação, etc.)
-        sala = Sala.objects.get(idSala=sala_id)
+        # **RECOMENDAÇÃO: Use get_object_or_404 para buscar a sala**
+        sala = get_object_or_404(Sala, idSala=sala_id)
 
         # Verifica se o equipamento já está reservado neste dia e hora
-        conflito = ReservaSala.objects.filter(sala=sala, data=data_reserva, hora_inicio=hora_inicio, hora_fim=hora_fim).exists()
+        conflito = ReservaSala.objects.filter(
+            sala=sala, 
+            data=data_reserva, 
+            hora_inicio=hora_inicio, 
+            hora_fim=hora_fim
+        ).exists()
         
         if conflito:
             messages.error(request, 'Esta sala já está reservada nesse horário!')
         else:
             ReservaSala.objects.create(
                 sala = sala,
-                data = data_reserva, 
+                data = data_reserva,
+                # CORREÇÃO APLICADA AQUI:
+                hora_inicio = hora_inicio,
+                hora_fim = hora_fim,
+                # RECOMENDAÇÃO: Adicionar status, se o modelo exigir (como em ReservaEquipamento)
+                # status = 'confirmado',
             )
 
             messages.success(request, 'Reserva feita com sucesso!')
             return redirect('reservas')
-        
+            
     salas = Sala.objects.all()
     return render(request, 'agdSala.html', {'salas': salas})
 
